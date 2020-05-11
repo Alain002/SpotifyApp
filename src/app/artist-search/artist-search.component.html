@@ -1,0 +1,36 @@
+<div class="body-artist-search">
+
+
+  <app-nav></app-nav>
+  <div class="search-artist-div">
+    <!-- <input type="text" class="btn search-artist-button"(click) = "search()" placeholder="Search for an artist..."> -->
+    <!-- <button class="btn search-artist-button" (click) = "search()">
+
+      <i class="fa fa-search search-icon float-right"></i>
+    </button> -->
+    <!-- <input type="text" class="btn search-artist-input" placeholder="Search.." name="search">
+    <button type="button" class="search-artist-button"><i class="fa fa-search "></i></button> -->
+
+    <form  #searchForm = "ngForm" (ngSubmit) = "searchArtist()">
+      <div class="row">
+        <button class="btn back-button" [routerLink]="['/']">Back</button>
+        <div class="input-group input-group-artist">
+          <input type="text" class="form-control"
+          required [(ngModel)]="model.artistName" name="artistName"
+            #artistName= "ngModel"  placeholder="Search for an artist..."
+            (keyup)="search($event)" required>
+          <div class="input-group-append">
+            <button class="btn btn-secondary" type="submit" [disabled] ="!searchForm.valid">
+              <i class="fa fa-search"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </form>
+
+
+  </div>
+  <app-artist-search-results></app-artist-search-results>
+</div>
+

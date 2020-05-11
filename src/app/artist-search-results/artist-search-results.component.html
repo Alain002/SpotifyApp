@@ -1,0 +1,31 @@
+<div class="container-fluid">
+  <div class="row justify-content-center">
+    <div *ngFor = "let artist of artists">
+      <div class="card" style="width: 18rem;" (click) ="artistClicked(artist)">
+        <img class="card-img-top img-artist" [src]="artist.image" alt="Card image cap">
+        <div class="card-body">
+          <h5 class="card-title">{{artist.name}}</h5>
+          <p class="card-text">
+            {{artist.followers}} followers
+          </p>
+          <span *ngFor ="let i of ratingList">
+            <span *ngIf="i <= (artist.rating | roundHalf)">
+              <i class="fa fa-star star"></i>
+            </span>
+            <span *ngIf="(artist.rating | roundHalf) - i == -0.5">
+              <i class="fa fa-star-half-o star" aria-hidden="true"></i>
+            </span>
+            <span *ngIf="(artist.rating | roundHalf) - i < 0
+            && (artist.rating | roundHalf) - i != - 0.5">
+              <i class="fa fa-star-o star" aria-hidden="true"></i>
+            </span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="artists !== null">
+  <h3 class="no-results-found">No results found</h3>
+</div>
+

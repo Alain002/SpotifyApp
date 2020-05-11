@@ -1,0 +1,18 @@
+.error-page-h1 {
+  text-align: center;
+}
+.error-page-img {
+  margin: 0 auto;
+}
+.error-button:hover {
+  color: #6d6e70;
+  border: 2px solid black
+}
+.error-button {
+  color: black;
+  border-radius: 3px;
+  border: 2px solid grey;
+  /* left: 20em; */
+  margin:auto;
+  display:block;
+}

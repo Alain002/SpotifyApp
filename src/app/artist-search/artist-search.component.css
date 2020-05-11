@@ -1,0 +1,33 @@
+.search-artist-input {
+  width: 20em;
+  border-radius: 3px;
+  border: 2px solid grey;
+  margin-top: 2em;
+}
+.search-icon {
+  font-size: 20px;
+}
+.search-artist-div {
+  width: 50%;
+  margin: 0 auto;
+}
+.input-group-artist {
+  /* width: 20em; */
+  margin: 2em auto;
+  width: 80%;
+}
+.body-artist-search {
+  background-color: black;
+  height: 100%;
+}
+.back-button {
+  color: white;
+  /* margin-right: 30px; */
+  border-radius: 3px;
+  border: 2px solid white;
+  margin: 2em auto;
+}
+.back-button:hover {
+  color: #6d6e70;
+  border: 2px solid #6d6e70
+}

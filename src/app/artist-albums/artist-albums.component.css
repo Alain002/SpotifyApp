@@ -1,0 +1,45 @@
+.card {
+  margin: 10px;
+  cursor: pointer;
+}
+.card:hover {
+  background-color: red;
+}
+.img-album {
+  height: 286px;
+  padding: 20px;
+  background-color: #161c2a;
+}
+.title-artist-albums {
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  color: white;
+  width: 100%;
+}
+.card-body {
+  background-color: #161c2a;
+}
+/* .card-body:hover {
+  background-color: #9a8881;
+} */
+.card-title {
+  color: white;
+}
+.card-text {
+  color: #6d6e70;
+}
+.body-artist-albums {
+  background-color: black;
+}
+.back-button {
+  color: white;
+  margin-right: 30px;
+  border-radius: 3px;
+  border: 2px solid white
+}
+.back-button:hover {
+  color: #6d6e70;
+  border: 2px solid #6d6e70
+}
+

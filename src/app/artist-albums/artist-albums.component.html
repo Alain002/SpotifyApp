@@ -1,0 +1,24 @@
+<div class="body-artist-albums">
+  <app-nav></app-nav>
+  <div class="row div-title" >
+
+    <h2 class="title-artist-albums"> <button class="btn back-button" (click)="back()">Back</button>{{selectedName}} Albums</h2></div>
+  <div class="container-fluid">
+    <div class="row justify-content-center">
+      <div *ngFor = "let album of artistAlbums">
+        <div class="card" style="width: 18rem;" (click)='openAlbum(album)'>
+          <img class="card-img-top img-album" [src]="album.image" alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title">{{album.name}}</h5>
+            <div class="card-text">
+              <p *ngFor=" let item of album.artists">
+                {{item.name}}
+              </p>
+              {{album.releaseDate}}&emsp;{{album.totalTracks}} tracks
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
