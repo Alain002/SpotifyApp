@@ -6,12 +6,10 @@ import { Injectable } from '@angular/core';
 })
 export class ArtistAlbumsService {
 
-// baseUrl = 'https://api.spotify.com/v1/artists';
 accessToken = '';
 constructor(private http: HttpClient) { }
 
 getAlbums(url: string) {
-  // console.log(url);
   this.accessToken = localStorage.getItem('access_token');
   const headers = new HttpHeaders()
             .set('Authorization', 'Bearer ' + this.accessToken);

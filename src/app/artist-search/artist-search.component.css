@@ -12,7 +12,6 @@
   margin: 0 auto;
 }
 .input-group-artist {
-  /* width: 20em; */
   margin: 2em auto;
   width: 80%;
 }
@@ -32,7 +31,6 @@
 }
 .back-button {
   color: white;
-  /* margin-right: 30px; */
   border-radius: 3px;
   border: 2px solid white;
   margin: 2em auto;

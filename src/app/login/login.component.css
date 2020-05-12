@@ -3,9 +3,19 @@
   border-radius: 3px;
   border: 2px solid grey;
 }
+.loginBtn:hover {
+  border: 2px solid #1db954;
+}
+.loginBtn:hover > .login {
+  color: #1db954;
+}
+.loginBtn:hover {
+  border: 2px solid #1db954;
+  color: #1db954;
+}
 .spotify-logo {
   font-size: 35px;
-  color: white;
+  color: #1db954;
 }
 .login {
   width: 100%;
@@ -22,3 +32,4 @@
 .login-div  a{
   align-self: center;
 }
+

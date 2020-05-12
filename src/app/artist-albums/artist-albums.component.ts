@@ -39,7 +39,16 @@ export class ArtistAlbumsComponent implements OnInit, OnDestroy {
               tempAlbum.releaseDate = item.release_date;
               tempAlbum.totalTracks = item.total_tracks;
               tempAlbum.spotify = item.external_urls.spotify;
-              tempAlbum.image = item.images.slice(1, 2).shift().url;
+              if (item.images.length === 1 ) {
+                tempAlbum.image = item.images.slice(0, 1).shift().url;
+              } else if (item.images.length === 2) {
+                tempAlbum.image = item.images.slice(1, 2).shift().url;
+              } else if (item.images.length >= 3) {
+                tempAlbum.image = item.images.slice(2, 3).shift().url;
+              } else {
+                tempAlbum.image = '';
+              }
+              // tempAlbum.image = item.images.slice(1, 2).shift().url;
               for ( const artist of item.artists) {
                 const tempArtists = new Artist();
                 tempArtists.name = artist.name;

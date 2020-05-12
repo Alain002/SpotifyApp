@@ -43,4 +43,16 @@
   color: #6d6e70;
   border: 2px solid #6d6e70
 }
-
+.hr-album {
+  border: 2px solid white;
+  position: relative;
+  width: 100%;
+}
+.preview-album {
+  color: white;
+  text-align: center;
+  display: block;
+}
+.album-artist {
+  white-space: pre-line;
+}

@@ -11,10 +11,13 @@
           <div class="card-body">
             <h5 class="card-title">{{album.name}}</h5>
             <div class="card-text">
-              <p *ngFor=" let item of album.artists">
-                {{item.name}}
-              </p>
-              {{album.releaseDate}}&emsp;{{album.totalTracks}} tracks
+              <span *ngFor=" let item of album.artists" class="album-artist">
+                {{item.name}}<br>
+              </span><br>
+              <span>{{album.releaseDate}}</span><br>
+              <span>{{album.totalTracks}} tracks</span>
+              <hr class="hr-album">
+              <span class="preview-album">Preview on Spotify</span>
             </div>
           </div>
         </div>
