@@ -10,6 +10,8 @@ export class ErrorPageComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    // remove the token from localstorage because it is expired
+    localStorage.removeItem('access_token');
   }
 
 }

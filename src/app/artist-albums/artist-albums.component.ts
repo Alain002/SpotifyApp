@@ -22,6 +22,7 @@ export class ArtistAlbumsComponent implements OnInit, OnDestroy {
               private artistAlbumsService: ArtistAlbumsService,
               private router: Router) { }
   ngOnInit() {
+    // get albums
     this.routeSubscription = this.route.paramMap.subscribe(
       params => {
         this.selectedUrl = params.get('url');
@@ -30,7 +31,6 @@ export class ArtistAlbumsComponent implements OnInit, OnDestroy {
         this.artistAlbumsService.getAlbums(this.selectedUrl).subscribe (
           (response: any) => {
             this.artistAlbums = [];
-            console.log(response.items);
             for (const item of response.items) {
               this.artists = [];
               const tempAlbum = new Album();
@@ -48,7 +48,6 @@ export class ArtistAlbumsComponent implements OnInit, OnDestroy {
               tempAlbum.artists = this.artists;
               this.artistAlbums.push(tempAlbum);
             }
-            console.log(this.artistAlbums);
           }, error => {
             this.router.navigate(['/error-page']);
           }
@@ -60,9 +59,11 @@ export class ArtistAlbumsComponent implements OnInit, OnDestroy {
     this.routeSubscription.unsubscribe();
   }
   openAlbum(album: Album) {
+    // open album
     window.open(album.spotify, '_blank');
   }
   back() {
+    // back to search and send the typedName to get the same results as previous
     this.router.navigate(['/callback', { typedName: this.typedName}]);
   }
 

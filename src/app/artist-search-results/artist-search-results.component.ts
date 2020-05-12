@@ -17,6 +17,7 @@ export class ArtistSearchResultsComponent implements OnInit, OnDestroy {
   constructor(private artistSearchService: ArtistSearchService,
               private router: Router) { }
   ngOnInit() {
+    // get the data from the behavior subject
     this.artistsSubscription = this.artistSearchService.artistsSubject.subscribe(
       dataArtists => {
         this.artists = dataArtists;
@@ -28,6 +29,7 @@ export class ArtistSearchResultsComponent implements OnInit, OnDestroy {
   }
 
   artistClicked(artist: Artist) {
+    // send data to the album component
     this.router.navigate(['/artist-albums', {url: artist.spotify, typedName: artist.typedName, name: artist.name}]);
   }
 

@@ -15,7 +15,6 @@ export class LoginComponent implements OnInit {
   login() {
     this.auth.accessData().subscribe(
       next => {
-        console.log('success');
       },
       error => {
         console.log(error);

@@ -27,8 +27,9 @@ export class ArtistSearchComponent implements OnInit {
               private artistSearchService: ArtistSearchService,
               private router: Router) { }
   ngOnInit() {
-    // console.log(this.route.snapshot.fragment);
-    // this.sessionId = this.route.snapshot.queryParams['token']
+    // get data from the response
+    // save the token in the localstorage
+    // check if selected name is null, used for back button in the album component
     if ( localStorage.getItem('access_token') === null) {
       this.routeSubscription = this.route.fragment
         .pipe(
@@ -53,7 +54,7 @@ export class ArtistSearchComponent implements OnInit {
     });
   }
 }
-
+  // search for artist on change
   search(event: any) {
     this.notFound = false;
     this.getDataSubscription = this.artistSearchValue = event.target.value;
@@ -67,6 +68,7 @@ export class ArtistSearchComponent implements OnInit {
               const tempArtist = new Artist();
               tempArtist.id = item.id;
               tempArtist.followers = item.followers.total;
+              // if the image is big, the loading time will be higher.
               if (item.images.length === 1 ) {
                 tempArtist.image = item.images.slice(0, 1).shift().url;
               } else if (item.images.length === 2) {
@@ -78,6 +80,7 @@ export class ArtistSearchComponent implements OnInit {
               }
 
               tempArtist.popularity = item.popularity;
+              // rating is from 0 to 100 -> /20 becomes from 0 to 5
               tempArtist.rating = tempArtist.popularity / 20;
               tempArtist.name = item.name;
               tempArtist.spotify = item.href;
@@ -93,8 +96,10 @@ export class ArtistSearchComponent implements OnInit {
         }
       );
     }
+    // behavior subject to send data to the service and then display them
     this.artistSearchService.artistsSubject.next(this.artists);
   }
+  // on search button clicked
   searchArtist() {
     this.getDataSubscription = this.artistSearchValue = this.model.artistName;
     if ( this.artistSearchValue.trim().length > 0 && this.artistSearchOldValue !== this.artistSearchValue) {

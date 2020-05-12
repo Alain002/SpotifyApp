@@ -16,9 +16,19 @@
   margin: 2em auto;
   width: 80%;
 }
+@media only screen and (max-width: 425px) {
+  .input-group-artist  {
+    width: 100%;
+    margin: 1em auto;
+  }
+  .back-button {
+    margin: 1em auto!important;
+  }
+}
 .body-artist-search {
   background-color: black;
   height: 100%;
+  min-height: 100vh;
 }
 .back-button {
   color: white;

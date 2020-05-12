@@ -11,7 +11,7 @@ accessToken = '';
 constructor(private http: HttpClient) { }
 
 getAlbums(url: string) {
-  console.log(url);
+  // console.log(url);
   this.accessToken = localStorage.getItem('access_token');
   const headers = new HttpHeaders()
             .set('Authorization', 'Bearer ' + this.accessToken);
