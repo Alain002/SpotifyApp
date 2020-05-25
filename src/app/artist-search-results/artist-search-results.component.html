@@ -1,8 +1,10 @@
 <div class="container-fluid">
   <div class="row justify-content-center">
-    <div *ngFor = "let artist of artists">
+    <div *ngFor = "let artist of artists; trackBy:trackByArtistId">
       <div class="card" style="width: 18rem;" (click) ="artistClicked(artist)">
-        <img class="card-img-top img-artist" [src]="artist.image" alt="no image">
+        <div class="card-img-wrapper" *ngIf="artist.image">
+          <img class="card-img-top img-artist" [src]="artist.image" alt="no image">
+        </div>
         <div class="card-body">
           <h5 class="card-title">{{artist.name}}</h5>
           <p class="card-text">
@@ -28,4 +30,3 @@
 <div *ngIf="artists !=null">
   <h3 *ngIf="artists.length == 0" class="no-results-found">No results found</h3>
 </div>
-

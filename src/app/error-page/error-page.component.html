@@ -1,7 +1,7 @@
 <div>
   <app-nav></app-nav>
-  <h1 class="error-page-h1">Error 401</h1>
-  <h1 class="error-page-h1">Unauthorized, please login to retrieve a valid token.</h1>
+  <h1 class="error-page-h1" [innerHTML] = "errorType"></h1>
+  <h1 class="error-page-h1" [innerHTML] = "errorMessage"></h1>
   <button type="button" class="btn error-button" [routerLink]="['/']" >Go to Home page</button>
 </div>
 

@@ -29,6 +29,9 @@
   height: 100%;
   min-height: 100vh;
 }
+.body-artist-search-data {
+  background-color: black;
+}
 .back-button {
   color: white;
   border-radius: 3px;
@@ -39,3 +42,15 @@
   color: #6d6e70;
   border: 2px solid #6d6e70
 }
+.artists-pagination {
+  display: flex;
+  justify-content: center;
+}
+/deep/ .page-link {
+  background-color: #161c2a !Important;
+  border: solid 1px #161c2a;
+ }
+ /deep/ .page-link:hover {
+  background-color: #141414 !Important;
+  border: solid 1px #141414;
+ }

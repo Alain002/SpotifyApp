@@ -7,7 +7,9 @@
     <div class="row justify-content-center">
       <div *ngFor = "let album of artistAlbums">
         <div class="card" style="width: 18rem;" (click)='openAlbum(album)'>
-          <img class="card-img-top img-album" [src]="album.image" alt="Card image cap">
+          <div class="card-img-wrapper" *ngIf="album.image">
+            <img class="card-img-top img-album" [src]="album.image" alt="Card image cap">
+          </div>
           <div class="card-body">
             <h5 class="card-title">{{album.name}}</h5>
             <div class="card-text">
@@ -20,6 +22,16 @@
               <span class="preview-album">Preview on Spotify</span>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="showPagination">
+    <div  class="albums-pagination ">
+      <div class="row">
+        <div class="col-xs-12 col-12">
+          <pagination [totalItems]="totalResult" [maxSize]="5" [boundaryLinks]="true"
+          [(ngModel)]="currentPage" (pageChanged)="pageChanged($event)"></pagination>
         </div>
       </div>
     </div>

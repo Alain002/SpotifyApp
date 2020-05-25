@@ -3,6 +3,7 @@ import { Artist } from './../_models/artist.model';
 import { Component, OnInit, Input, OnChanges, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
+import {PageEvent} from '@angular/material/paginator';
 
 @Component({
   selector: 'app-artist-search-results',
@@ -14,6 +15,8 @@ export class ArtistSearchResultsComponent implements OnInit, OnDestroy {
   artistsSubscription: Subscription;
   artists: Artist[] = [];
   ratingList = [1, 2, 3, 4, 5];
+
+
   constructor(private artistSearchService: ArtistSearchService,
               private router: Router) { }
   ngOnInit() {
@@ -32,6 +35,8 @@ export class ArtistSearchResultsComponent implements OnInit, OnDestroy {
     // send data to the album component
     this.router.navigate(['/artist-albums', {url: artist.spotify, typedName: artist.typedName, name: artist.name}]);
   }
-
+  trackByArtistId(index: number, artist: Artist) {
+    return artist.id;
+  }
 }
 

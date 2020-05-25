@@ -1,4 +1,4 @@
-<div class="body-artist-search">
+<div [ngClass] = "(artists.length === 0) ? 'body-artist-search': 'body-artist-search-data' ">
   <app-nav></app-nav>
   <div class="search-artist-div">
     <form  #searchForm = "ngForm" (ngSubmit) = "searchArtist()">
@@ -19,5 +19,15 @@
     </form>
   </div>
   <app-artist-search-results></app-artist-search-results>
+  <div *ngIf="showPagination">
+    <div  class="artists-pagination">
+      <div class="row">
+        <div class="col-xs-12 col-12">
+          <pagination [totalItems]="totalResult" [maxSize]="5" [boundaryLinks]="true"
+          [(ngModel)]="currentPage" (pageChanged)="pageChanged($event)"></pagination>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
