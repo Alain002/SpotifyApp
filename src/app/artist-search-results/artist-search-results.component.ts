@@ -13,8 +13,10 @@ import {PageEvent} from '@angular/material/paginator';
 export class ArtistSearchResultsComponent implements OnInit, OnDestroy {
 
   artistsSubscription: Subscription;
+  pageNumberSubscription: Subscription;
   artists: Artist[] = [];
   ratingList = [1, 2, 3, 4, 5];
+  pageNumber = 1;
 
 
   constructor(private artistSearchService: ArtistSearchService,
@@ -26,6 +28,11 @@ export class ArtistSearchResultsComponent implements OnInit, OnDestroy {
         this.artists = dataArtists;
       }
     );
+    this.pageNumberSubscription = this.artistSearchService.pageNumberSubject.subscribe(
+      pageNumber => {
+        this.pageNumber = pageNumber;
+      }
+    );
   }
   ngOnDestroy(): void {
     this.artistsSubscription.unsubscribe();
@@ -33,7 +40,8 @@ export class ArtistSearchResultsComponent implements OnInit, OnDestroy {
 
   artistClicked(artist: Artist) {
     // send data to the album component
-    this.router.navigate(['/artist-albums', {url: artist.spotify, typedName: artist.typedName, name: artist.name}]);
+    this.router.navigate(['/artist-albums',
+    {url: artist.spotify, typedName: artist.typedName, name: artist.name, pageNumber: this.pageNumber}]);
   }
   trackByArtistId(index: number, artist: Artist) {
     return artist.id;

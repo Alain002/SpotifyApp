@@ -12,7 +12,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './artist-search.component.html',
   styleUrls: ['./artist-search.component.css']
 })
-export class ArtistSearchComponent implements OnInit {
+export class ArtistSearchComponent implements OnInit, OnDestroy {
 
   spotifyToken: any;
   artistSearchValue = '';
@@ -24,9 +24,8 @@ export class ArtistSearchComponent implements OnInit {
   };
   getDataSubscription: Subscription;
   routeSubscription: Subscription;
-  selectedName = '';
   currentPage = 1;
-  page: number;
+  page = 1;
   showPagination = false;
   totalResult = 0;
 
@@ -35,39 +34,43 @@ export class ArtistSearchComponent implements OnInit {
               private router: Router,
               private alertifyService: AlertifyService) { }
   ngOnInit() {
-    // get data from the response
-    // save the token in the localstorage
-    // check if selected name is null, used for back button in the album component
-      this.routeSubscription = this.route.fragment
-        .pipe(
-          map(fragment => new URLSearchParams(fragment)),
-          map(params => ({
-            access_token: params.get('access_token'),
-            token_type: params.get('token_type'),
-            expires_in: params.get('expires_in'),
-            state: params.get('state'),
-          }))
-    )
-    .subscribe(res => {
-      if (res.access_token != null && localStorage.getItem('access_token') !== res.access_token) {
-        localStorage.setItem('access_token', res.access_token);
-        this.alertifyService.success('login successful');
-      } else {
-        this.alertifyService.message('reloading page');
-      }
-    });
-      this.route.paramMap.subscribe(
-    params => {
-      this.selectedName = params.get('typedName');
-      if (this.selectedName != null) {
-        if (this.selectedName.trim().length > 0) {
-          this.alertifyService.message('showing artists');
-          this.model.artistName = this.selectedName;
-          this.searchArtist();
+      // get data from the response
+      // save the token in the localstorage
+      // check if selected name is null, used for back button in the album component
+        this.routeSubscription = this.route.fragment
+          .pipe(
+            map(fragment => new URLSearchParams(fragment)),
+            map(params => ({
+              access_token: params.get('access_token'),
+              token_type: params.get('token_type'),
+              expires_in: params.get('expires_in'),
+              state: params.get('state'),
+            }))
+      )
+      .subscribe(res => {
+        if (res.access_token != null && localStorage.getItem('access_token') !== res.access_token) {
+          localStorage.setItem('access_token', res.access_token);
+          this.alertifyService.success('login successful');
         }
-      }
-  });
-}
+      });
+        this.route.paramMap.subscribe(
+      params => {
+        this.artistSearchValue = params.get('typedName');
+        this.page = +params.get('pageNumber');
+        if (this.artistSearchValue != null) {
+          if (this.artistSearchValue.trim().length > 0) {
+            this.alertifyService.message('showing artists');
+            this.model.artistName = this.artistSearchValue;
+            this.currentPage = this.page;
+            this.getArtists(this.artistSearchValue, (this.page - 1) * 20);
+          }
+        }
+    });
+  }
+  ngOnDestroy() {
+    this.routeSubscription.unsubscribe();
+    this.getDataSubscription.unsubscribe();
+  }
   // search for artist on change
   search(event: any) {
     this.notFound = false;
@@ -88,7 +91,7 @@ export class ArtistSearchComponent implements OnInit {
     }
   }
   getArtists(artistSearchValue: string, pageNumber: number) {
-    this.getDataSubscription = this.artistSearchService.search(this.artistSearchValue, pageNumber).subscribe(
+    this.getDataSubscription = this.artistSearchService.search(artistSearchValue, pageNumber).subscribe(
       (response: any) => {
         this.totalResult = response.artists.total;
         for (const item of response.artists.items) {
@@ -125,5 +128,6 @@ export class ArtistSearchComponent implements OnInit {
     this.page = event.page;
     this.artists = new Array<Artist>();
     this.getArtists(this.artistSearchValue, (this.page - 1) * 20);
+    this.artistSearchService.pageNumberSubject.next(this.page);
   }
 }

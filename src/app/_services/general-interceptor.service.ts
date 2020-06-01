@@ -50,7 +50,7 @@ export class GeneralInterceptorService implements HttpInterceptor {
             this.route.navigate(['error-page']).then(
               () => {
                 this.errorRequestInfo = new ErrorRequestInfo();
-                this.errorRequestInfo.title = 'clint-error';
+                this.errorRequestInfo.title = 'client-error';
                 this.errorRequestInfo.statusCode = error.status;
                 this.errorervice.errorSubject.next(this.errorRequestInfo);
               }

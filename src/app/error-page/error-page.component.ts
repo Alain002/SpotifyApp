@@ -20,7 +20,9 @@ export class ErrorPageComponent implements OnInit {
 
     this.error.errorSubject.subscribe(
       errorRequestInfo => {
-        if (errorRequestInfo.title == null) {
+        if (errorRequestInfo == null) {
+          this.router.navigate(['/']);
+        } else if (errorRequestInfo.title === null) {
           this.router.navigate(['/']);
         } else if (errorRequestInfo.title === 'server-error' ||
             errorRequestInfo.title === 'redirection-error' ||
@@ -46,36 +48,5 @@ export class ErrorPageComponent implements OnInit {
               this.errorMessage = 'Page not found';
             }
       });
-    // remove the token from localstorage because it is expired
-    // this.route.paramMap.subscribe(
-    //   params => {
-    //   //   const title = params.get('title');
-    //   //   if (title === null) {
-    //   //     this.router.navigate(['/']);
-    //   //   } else {
-    //   //   if (title === 'not-found') {
-    //   //     this.errorType = 'Error 404';
-    //   //     this.errorMessage = 'Page not found';
-    //   //   } else if (title === 'unauthorized') {
-    //   //     localStorage.removeItem('access_token');
-    //   //     this.errorType = 'Error 401';
-    //   //     this.errorMessage = 'Unauthorized, please login to retrieve a valid token.';
-    //   //   } else if (title === 'server-error') {
-    //   //     if (params.get('statusCode') == null) {
-    //   //       this.router.navigate(['/']);
-    //   //     } else {
-    //   //       this.errorType = 'Error ' + params.get('statusCode');
-    //   //       this.errorMessage = 'Server error';
-    //   //     }
-    //   //   } else if (title === 'redirection-error') {
-    //   //     if (params.get('statusCode') == null) {
-    //   //       this.router.navigate(['/']);
-    //   //     } else {
-    //   //       this.errorType = 'Error ' + params.get('statusCode');
-    //   //       this.errorMessage = 'Redirection error';
-    //   //     }
-    //   //   }
-    //   // }
-    // });
   }
 }

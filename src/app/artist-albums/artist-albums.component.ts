@@ -22,6 +22,7 @@ export class ArtistAlbumsComponent implements OnInit, OnDestroy {
   currentPage = 1;
   page: number;
   totalResult = 0;
+  artistPageNumber = 0;
   routeSubscription: Subscription;
 
   constructor(private route: ActivatedRoute,
@@ -32,9 +33,10 @@ export class ArtistAlbumsComponent implements OnInit, OnDestroy {
     // get albums
     this.routeSubscription = this.route.paramMap.subscribe(
       params => {
-        this.selectedUrl = params.get('url');
-        this.selectedName = params.get('name');
-        this.typedName = params.get('typedName');
+        this.selectedUrl = params.get('url'); // albums url
+        this.selectedName = params.get('name'); // artist name
+        this.typedName = params.get('typedName'); // user type artist name
+        this.artistPageNumber = +params.get('pageNumber'); // artist page number
         this.getAlbums(0);
       }
     );
@@ -48,7 +50,7 @@ export class ArtistAlbumsComponent implements OnInit, OnDestroy {
   }
   back() {
     // back to search and send the typedName to get the same results as previous
-    this.router.navigate(['/callback', { typedName: this.typedName}]);
+    this.router.navigate(['/callback', { typedName: this.typedName, pageNumber: this.artistPageNumber}]);
   }
   getAlbums(offsetValue) {
     this.artistAlbums = [];
