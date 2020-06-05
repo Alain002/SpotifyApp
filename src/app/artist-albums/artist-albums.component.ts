@@ -1,3 +1,5 @@
+import { ArtistSearchService } from './../_services/artist-search.service';
+import { AlbumArtist } from './../_models/albumArtist';
 import { AlertifyService } from './../_services/alertify.service';
 import { Album } from './../_models/album.model';
 import { ArtistAlbumsService } from './../_services/artist-albums.service';
@@ -5,6 +7,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Artist } from '../_models/artist.model';
 import { Subscription } from 'rxjs';
+import { ArtistAlbum } from '../_models/artistAlbum.model';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-artist-albums',
@@ -24,25 +28,35 @@ export class ArtistAlbumsComponent implements OnInit, OnDestroy {
   totalResult = 0;
   artistPageNumber = 0;
   routeSubscription: Subscription;
+  artistAlbum: ArtistAlbum = new ArtistAlbum();
+  artistAlbumSubscription: Subscription = null;
 
   constructor(private route: ActivatedRoute,
               private artistAlbumsService: ArtistAlbumsService,
               private router: Router,
-              private alertifyService: AlertifyService) { }
+              private alertifyService: AlertifyService, private titleService: Title,
+              private artistSearchService: ArtistSearchService) { }
   ngOnInit() {
     // get albums
-    this.routeSubscription = this.route.paramMap.subscribe(
-      params => {
-        this.selectedUrl = params.get('url'); // albums url
-        this.selectedName = params.get('name'); // artist name
-        this.typedName = params.get('typedName'); // user type artist name
-        this.artistPageNumber = +params.get('pageNumber'); // artist page number
+    this.routeSubscription = this.artistAlbumsService.artistAlbumSubject.subscribe(
+      (artistAlbum) => {
+        if (artistAlbum === null) {
+          this.router.navigate(['/']);
+        }
+        this.artistAlbum = artistAlbum;
+        this.selectedUrl = artistAlbum.url; // albums url
+        this.selectedName = artistAlbum.name; // artist name
+        this.typedName = artistAlbum.typedName; // user type artist name
+        this.artistPageNumber = +artistAlbum.pageNumber; // artist page number
+        this.titleService.setTitle(this.selectedName + '\'s albums');
         this.getAlbums(0);
       }
     );
   }
   ngOnDestroy(): void {
-    this.routeSubscription.unsubscribe();
+    if (this.routeSubscription !== null) {
+      this.routeSubscription.unsubscribe();
+    }
   }
   openAlbum(album: Album) {
     // open album
@@ -50,7 +64,11 @@ export class ArtistAlbumsComponent implements OnInit, OnDestroy {
   }
   back() {
     // back to search and send the typedName to get the same results as previous
-    this.router.navigate(['/callback', { typedName: this.typedName, pageNumber: this.artistPageNumber}]);
+    this.router.navigate(['/callback']);
+    const albumArtist = new AlbumArtist();
+    albumArtist.typedName = this.typedName;
+    albumArtist.pageNumber = this.artistPageNumber;
+    this.artistSearchService.albumArtistSubject.next(albumArtist);
   }
   getAlbums(offsetValue) {
     this.artistAlbums = [];

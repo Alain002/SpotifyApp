@@ -1,10 +1,12 @@
+import { AlbumArtist } from './../_models/albumArtist';
 import { AlertifyService } from './../_services/alertify.service';
 import { Artist } from './../_models/artist.model';
 import { ArtistSearchService } from './../_services/artist-search.service';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
+import { Title } from '@angular/platform-browser';
 
 
 @Component({
@@ -14,6 +16,7 @@ import { Subscription } from 'rxjs';
 })
 export class ArtistSearchComponent implements OnInit, OnDestroy {
 
+  @Output() resultFound = new EventEmitter();
   spotifyToken: any;
   artistSearchValue = '';
   artistSearchOldValue = '';
@@ -22,22 +25,26 @@ export class ArtistSearchComponent implements OnInit, OnDestroy {
   model: any  = {
 
   };
-  getDataSubscription: Subscription;
-  routeSubscription: Subscription;
+  getDataSubscription: Subscription = null;
+  routeSubscription: Subscription = null;
+  albumArtistSubscription: Subscription = null;
   currentPage = 1;
   page = 1;
   showPagination = false;
   totalResult = 0;
+  albumArtist = new AlbumArtist();
 
   constructor(private route: ActivatedRoute,
               private artistSearchService: ArtistSearchService,
               private router: Router,
-              private alertifyService: AlertifyService) { }
+              private alertifyService: AlertifyService,
+              private titleService: Title) { }
   ngOnInit() {
+    this.titleService.setTitle('Search for Artists...');
       // get data from the response
       // save the token in the localstorage
       // check if selected name is null, used for back button in the album component
-        this.routeSubscription = this.route.fragment
+    this.routeSubscription = this.route.fragment
           .pipe(
             map(fragment => new URLSearchParams(fragment)),
             map(params => ({
@@ -53,23 +60,34 @@ export class ArtistSearchComponent implements OnInit, OnDestroy {
           this.alertifyService.success('login successful');
         }
       });
-        this.route.paramMap.subscribe(
-      params => {
-        this.artistSearchValue = params.get('typedName');
-        this.page = +params.get('pageNumber');
-        if (this.artistSearchValue != null) {
-          if (this.artistSearchValue.trim().length > 0) {
-            this.alertifyService.message('showing artists');
-            this.model.artistName = this.artistSearchValue;
-            this.currentPage = this.page;
-            this.getArtists(this.artistSearchValue, (this.page - 1) * 20);
+    this.albumArtistSubscription = this.artistSearchService.albumArtistSubject.subscribe(
+        (albumArtist) => {
+          if (albumArtist !== null) {
+            this.albumArtist = albumArtist;
+            this.artistSearchValue = albumArtist.typedName;
+            this.page = albumArtist.pageNumber;
+            if (this.artistSearchValue != null) {
+              if (this.artistSearchValue.trim().length > 0) {
+                this.alertifyService.message('showing artists');
+                this.model.artistName = this.artistSearchValue;
+                this.currentPage = this.page;
+                this.getArtists(this.artistSearchValue, (this.page - 1) * 20);
+              }
+            }
           }
         }
-    });
+      );
   }
   ngOnDestroy() {
-    this.routeSubscription.unsubscribe();
-    this.getDataSubscription.unsubscribe();
+    if (this.routeSubscription !== null) {
+      this.routeSubscription.unsubscribe();
+    }
+    if (this.getDataSubscription !== null) {
+      this.getDataSubscription.unsubscribe();
+    }
+    if (this.albumArtistSubscription !== null) {
+      this.albumArtistSubscription.unsubscribe();
+    }
   }
   // search for artist on change
   search(event: any) {
@@ -119,10 +137,10 @@ export class ArtistSearchComponent implements OnInit, OnDestroy {
         } else {
           this.showPagination = false;
         }
+        this.artistSearchService.artistsSubject.next(this.artists);
       }, error => {
       }
     );
-    this.artistSearchService.artistsSubject.next(this.artists);
   }
   pageChanged(event: any): void {
     this.page = event.page;

@@ -1,3 +1,5 @@
+import { ArtistAlbum } from './../_models/artistAlbum.model';
+import { BehaviorSubject } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
@@ -7,6 +9,7 @@ import { Injectable } from '@angular/core';
 export class ArtistAlbumsService {
 
 accessToken = '';
+artistAlbumSubject = new BehaviorSubject<ArtistAlbum>(null);
 constructor(private http: HttpClient) { }
 
 getAlbums(url: string, offsetValue: number) {
